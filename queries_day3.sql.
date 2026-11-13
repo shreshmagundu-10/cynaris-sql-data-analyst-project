@@ -1,0 +1,70 @@
+
+-- Cynaris Solutions
+-- Week 1 Day 3
+-- SQL Aggregations: GROUP BY and HAVING
+
+-- Create sales table
+CREATE TABLE sales (
+    Employee TEXT,
+    Region TEXT,
+    Category TEXT,
+    Sales INTEGER,
+    Month TEXT
+);
+
+-- Insert sample data
+INSERT INTO sales VALUES
+('Ravi', 'South', 'Laptop', 30000, 'January'),
+('Priya', 'North', 'Mobile', 20000, 'January'),
+('Ravi', 'South', 'Mobile', 10000, 'February'),
+('Anil', 'North', 'Laptop', 40000, 'February'),
+('Priya', 'South', 'Laptop', 25000, 'March'),
+('Anil', 'North', 'Mobile', 15000, 'March'),
+('Ravi', 'South', 'Laptop', 35000, 'March'),
+('Priya', 'North', 'Mobile', 30000, 'February');
+
+-- Query 1: Count total records
+SELECT COUNT(*) FROM sales;
+
+-- Query 2: Calculate total sales
+SELECT SUM(Sales) FROM sales;
+
+-- Query 3: Calculate average sales
+SELECT AVG(Sales) FROM sales;
+
+-- Query 4: Find maximum sales
+SELECT MAX(Sales) FROM sales;
+
+-- Query 5: Find minimum sales
+SELECT MIN(Sales) FROM sales;
+
+-- Query 6: Total sales by region
+SELECT Region, SUM(Sales) AS Total_Sales
+FROM sales
+GROUP BY Region;
+
+-- Query 7: Total sales by category
+SELECT Category, SUM(Sales) AS Total_Sales
+FROM sales
+GROUP BY Category;
+
+-- Query 8: Total sales by month
+SELECT Month, SUM(Sales) AS Total_Sales
+FROM sales
+GROUP BY Month;
+
+-- HAVING: Regions with sales above 60000
+SELECT Region, SUM(Sales) AS Total_Sales
+FROM sales
+GROUP BY Region
+HAVING SUM(Sales) > 60000;
+
+-- Window Function: Total sales by region
+SELECT
+    Employee,
+    Region,
+    Sales,
+    SUM(Sales) OVER(
+        PARTITION BY Region
+    ) AS Region_Total
+FROM sales;
